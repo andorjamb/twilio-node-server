@@ -1,13 +1,12 @@
 'use strict';
-
+require('dotenv').config()
+const secrets = require('./secrets.js');
 const express = require('express')
 const cors = require('cors');
-require('dotenv').config()
 
 const helmet = require("helmet");
 const bodyParser = require('body-parser');
-const { port, host } = require('./config.js')
-const secrets = require('./secrets.js');
+const { port } = require('./config.js')
 
 const twilio_number = secrets.twilio_number;
 const twilio_sid = secrets.twilio_sid;
@@ -22,7 +21,6 @@ app.use(helmet.hidePoweredBy());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-
 app.get('/', (req, res) => {
     res.send('Hello World!')
 })
@@ -30,24 +28,34 @@ app.get('/home', (req, res) => { //for testing
     res.send('Serving home page');
 })
 
+app.get('/sms/:signalId', (req, res) => {
+    res.send('Hi')
+})
+
+/**
+ *  body: `SOS Service: ${req.body.senderName} needs assistance. ${req.body.message}.  GO TO: https://localhost:3000/sos/${req.body.signalId}`,
+ * 
+ */
+
 app.post('/sms', (req, res) => {
     res.header('Content-Type', 'application/json');
     try {
-        client.messages
-            .create({
-                body: req.body.message,
-                from: `${twilio_number}`,
-                to: `${my_number}` //for testing, will be req.body.recipients
-            })
-            .then(() => { res.send(JSON.stringify({ success: true })) })
-
-    }
-    catch (err) {
-        console.log(err);
-        res.send(JSON.stringify({ success: false }))
-    }
-
+            client.messages
+                .create({
+                    body: req.body.message,
+                    from: `${twilio_number}`,
+                    to: req.body.recipient    //`${my_number}`
+                })
+                .then(() => { res.send(JSON.stringify({ success: true })) })
+    
+        }
+        catch (err) {
+            console.log(err);
+            res.send(JSON.stringify({ success: false }))
+        } 
 })
+
+/* }) */
 
 
 app.listen(port, () => {
@@ -55,10 +63,6 @@ app.listen(port, () => {
 })
 
 module.exports = app;
-
-
-
-
 
 
 /* 
@@ -70,9 +74,6 @@ console.log(twilio_number)
 console.log(my_number)
 //`https://api.twilio.com/2010-04-01/Accounts/${AccountSid}/Messages.json`
 
-  
-
-
-/*  */
+   */
 
 
