@@ -11,7 +11,7 @@ const { port } = require('./config.js')
 const twilio_number = secrets.twilio_number;
 const twilio_sid = secrets.twilio_sid;
 const authToken = secrets.authToken;
-const my_number = secrets.my_number; //for testing only
+//const my_number = secrets.my_number; //for testing only
 
 const client = require('twilio')(twilio_sid, authToken);
 const app = express();
@@ -44,7 +44,7 @@ app.post('/sms', (req, res) => {
                 .create({
                     body: req.body.message,
                     from: `${twilio_number}`,
-                    to: req.body.recipient    //`${my_number}`
+                    to: req.body.recipient
                 })
                 .then(() => { res.send(JSON.stringify({ success: true })) })
     
@@ -54,9 +54,6 @@ app.post('/sms', (req, res) => {
             res.send(JSON.stringify({ success: false }))
         } 
 })
-
-/* }) */
-
 
 app.listen(port, () => {
     console.log(`Twilio server listening on port ${port}`)
