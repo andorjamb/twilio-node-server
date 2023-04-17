@@ -11,15 +11,13 @@ const twilio_number = process.env.REACT_APP_TWILIO_NUMBER;
 const twilio_sid = process.env.REACT_APP_TWILIO_ACCOUNT_SID; 
 const authToken = process.env.REACT_APP_TWILIO_AUTH_TOKEN;
 
-const react_url = 'https://www.'
-const react_dev_url = 'localhost:3000/'
-
-const BODY = `SOS Service: ${req.body.senderName} needs assistance. ${req.body.message}.  GO TO: ${react_dev_url}${req.body.signalId}`
+const react_prod_url = 'https://sos-service.netlify.app'
+const react_dev_url = 'http://localhost:3000'
 
 const client = require('twilio')(twilio_sid, authToken);
 const app = express();
 
-app.use(cors());
+app.use(cors({origin: [react_dev_url, react_prod_url]}));
 app.use(helmet.hidePoweredBy());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -35,17 +33,13 @@ app.get('/sms/:signalId', (req, res) => {
     res.send('Hi')
 })
 
-/**
- *  body: `SOS Service: ${req.body.senderName} needs assistance. ${req.body.message}.  GO TO: https://localhost:3000/sos/${req.body.signalId}`,
- * 
- */
 
 app.post('/sms', (req, res) => {
     res.header('Content-Type', 'application/json');
     try {
             client.messages
                 .create({
-                    body: req.body.message,
+                    body: `SOS Service: ${req.body.senderName} needs assistance. ${req.body.signalType}: ${req.body.message}.  GO TO: ${react_prod_url}/sms/${req.body.signalId}`,
                     from: `${twilio_number}`,
                     to: req.body.recipient
                 })
