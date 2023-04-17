@@ -1,6 +1,6 @@
 'use strict';
 require('dotenv').config()
-const secrets = require('./secrets.js');
+//const secrets = require('./secrets.js');
 const express = require('express')
 const cors = require('cors');
 
@@ -8,10 +8,9 @@ const helmet = require("helmet");
 const bodyParser = require('body-parser');
 const { port } = require('./config.js')
 
-const twilio_number = secrets.twilio_number;
-const twilio_sid = secrets.twilio_sid;
-const authToken = secrets.authToken;
-//const my_number = secrets.my_number; //for testing only
+const twilio_number = process.env.REACT_APP_TWILIO_NUMBER; 
+const twilio_sid = process.env.REACT_APP_TWILIO_ACCOUNT_SID; 
+const authToken = process.env.REACT_APP_TWILIO_AUTH_TOKEN;
 
 const client = require('twilio')(twilio_sid, authToken);
 const app = express();
