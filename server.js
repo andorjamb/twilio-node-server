@@ -1,6 +1,5 @@
 'use strict';
 require('dotenv').config()
-//const secrets = require('./secrets.js');
 const express = require('express')
 const cors = require('cors');
 
@@ -11,6 +10,11 @@ const { port } = require('./config.js')
 const twilio_number = process.env.REACT_APP_TWILIO_NUMBER; 
 const twilio_sid = process.env.REACT_APP_TWILIO_ACCOUNT_SID; 
 const authToken = process.env.REACT_APP_TWILIO_AUTH_TOKEN;
+
+const react_url = 'https://www.'
+const react_dev_url = 'localhost:3000/'
+
+const BODY = `SOS Service: ${req.body.senderName} needs assistance. ${req.body.message}.  GO TO: ${react_dev_url}${req.body.signalId}`
 
 const client = require('twilio')(twilio_sid, authToken);
 const app = express();
@@ -60,16 +64,5 @@ app.listen(port, () => {
 
 module.exports = app;
 
-
-/* 
-
-
-console.log(secrets.authToken)//for testing
-console.log(secrets.twilio_sid)//for testing
-console.log(twilio_number)
-console.log(my_number)
-//`https://api.twilio.com/2010-04-01/Accounts/${AccountSid}/Messages.json`
-
-   */
 
 
