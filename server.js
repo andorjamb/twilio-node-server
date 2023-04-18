@@ -38,6 +38,7 @@ app.get('/sms/:signalId', (req, res) => {
 app.post('/sms', (req, res) => {
     res.header('Content-Type', 'application/json');
     try {
+        console.log(req.body.signalId);
             client.messages
                 .create({
                     body: `SOS Service: ${req.body.senderName} needs assistance. ${req.body.signalType}: ${req.body.message}.  Go to: ${react_prod_url}/sos/${req.body.signalId}  to view ${req.body.senderName}'s location`,
@@ -57,6 +58,17 @@ app.listen(port, () => {
     console.log(`Twilio server listening on port ${port}`)
 })
 
+const getsos = (req,res) =>{
+const httpdata = req.body
+console.log(httpdata)
+if (httpdata === ''){
+    res.status(404).json('empty post provided')
+    return;
+}
+res.status(200).json(httpdata)
+}
+
+app.post('/sos',getsos)
 module.exports = app;
 
 
