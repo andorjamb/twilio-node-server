@@ -33,6 +33,7 @@ app.get('/sms/:signalId', (req, res) => {
     res.send('Hi')
 })
 
+//`${twilio_number}`
 
 app.post('/sms', (req, res) => {
     res.header('Content-Type', 'application/json');
@@ -40,7 +41,7 @@ app.post('/sms', (req, res) => {
             client.messages
                 .create({
                     body: `SOS Service: ${req.body.senderName} needs assistance. ${req.body.signalType}: ${req.body.message}.  GO TO: ${react_prod_url}/sms/${req.body.signalId}`,
-                    from: `${twilio_number}`,
+                    from: 'SOS Service',
                     to: req.body.recipient
                 })
                 .then(() => { res.send(JSON.stringify({ success: true })) })
