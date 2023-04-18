@@ -40,7 +40,7 @@ app.post('/sms', (req, res) => {
     try {
             client.messages
                 .create({
-                    body: `SOS Service: ${req.body.senderName} needs assistance. ${req.body.signalType}: ${req.body.message}.  GO TO: ${react_prod_url}/sms/${req.body.signalId}`,
+                    body: `SOS Service: ${req.body.senderName} needs assistance. ${req.body.signalType}: ${req.body.message}.  Go to: ${react_prod_url}/sms/${req.body.signalId}  to view ${req.body.senderName}'s location`,
                     from: 'SOS Service',
                     to: req.body.recipient
                 })
