@@ -41,7 +41,7 @@ app.post('/sms', (req, res) => {
         console.log(req.body.signalId);
             client.messages
                 .create({
-                    body: `SOS Service: ${req.body.senderName} needs assistance. ${req.body.signalType}: ${req.body.message}.  Go to: ${react_prod_url}/sos/${req.body.signalId}?rsp=${req.body.recipient}  to view ${req.body.senderName}'s location`,
+                    body: `SOS Service: ${req.body.senderName} needs assistance. ${req.body.signalType}: ${req.body.message}.  Go to: encodeURIComponent(${react_prod_url}/sos/${req.body.signalId}?rsp=${req.body.recipient})  to view ${req.body.senderName}'s location`,
                     from: 'SOS Service',
                     to: req.body.recipient
                 })
