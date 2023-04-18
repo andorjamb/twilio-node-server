@@ -38,10 +38,10 @@ app.get('/sms/:signalId', (req, res) => {
 app.post('/sms', (req, res) => {
     res.header('Content-Type', 'application/json');
     try {
-        console.log(req.body.signalId);
+        const rsp=encodeURIComponent(req.body.recipient);
             client.messages
                 .create({
-                    body: `SOS Service: ${req.body.senderName} needs assistance. ${req.body.signalType}: ${req.body.message}.  Go to: encodeURIComponent(${react_prod_url}/sos/${req.body.signalId}?rsp=${req.body.recipient})  to view ${req.body.senderName}'s location`,
+                    body: `SOS Service: ${req.body.senderName} needs assistance. ${req.body.signalType}: ${req.body.message}.  Go to:${react_prod_url}/sos/${req.body.signalId}?rsp=${rsp}  to view ${req.body.senderName}'s location`,
                     from: 'SOS Service',
                     to: req.body.recipient
                 })
@@ -59,8 +59,9 @@ app.listen(port, () => {
 })
 
 const getsos = (req,res) =>{
-const httpdata = req.body
-console.log(httpdata)
+const httpdata = req.body;
+console.log(httpdata);
+
 if (httpdata === ''){
     res.status(404).json('empty post provided')
     return;
@@ -68,7 +69,8 @@ if (httpdata === ''){
 res.status(200).json(httpdata)
 }
 
-app.post('/sos',getsos)
+app.post('/sos', getsos)
+
 module.exports = app;
 
 
